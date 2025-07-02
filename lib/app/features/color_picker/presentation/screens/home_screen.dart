@@ -26,26 +26,22 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("WhatColors?", style: GoogleFonts.pacifico(fontWeight: FontWeight.w500)),
       ),
 
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Consumer<IHomeScreenViewmodel>(
-            builder: (context, viewmodel, child) => Center(
-              child: viewmodel.image != null
-                  ? Image.file(viewmodel.image!)
-                  : Column(
-                      children: [
-                        Icon(UIcons.regularRounded.gallery),
-                        Text("Add an image to extract colors"),
-                      ],
-                    ),
-            ),
-          ),
-        ],
+      body: Consumer<IHomeScreenViewmodel>(
+        builder: (context, viewmodel, child) => Center(
+          child: viewmodel.image != null
+              ? Image.file(viewmodel.image!, fit: BoxFit.scaleDown)
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(UIcons.regularRounded.gallery),
+                    Text("Add an image to extract colors"),
+                  ],
+                ),
+        ),
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => viewmodel.pickImage(),
+        onPressed: () => viewmodel.pickImage(context),
         child: Icon(Icons.add),
       ),
     );
