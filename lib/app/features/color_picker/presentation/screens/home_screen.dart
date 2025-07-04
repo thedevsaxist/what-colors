@@ -18,11 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: IconButton.filled(
-          onPressed: () {},
-          icon: Icon(UIcons.solidRounded.menu_burger, color: Colors.white, size: 18),
-        ),
 
+        // leading: IconButton.filled(
+        //   onPressed: () {},
+        //   icon: Icon(UIcons.solidRounded.menu_burger, color: Colors.white, size: 18),
+        // ),
         title: Text("WhatColors?", style: GoogleFonts.pacifico(fontWeight: FontWeight.w500)),
       ),
 
@@ -33,7 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(UIcons.regularRounded.gallery),
+                    Icon(UIcons.regularRounded.picture, size: 40),
+                    const SizedBox(height: 10),
                     Text("Add an image to extract colors"),
                   ],
                 ),

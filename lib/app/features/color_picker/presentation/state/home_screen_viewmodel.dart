@@ -41,40 +41,71 @@ class HomeScreenViewmodel extends ChangeNotifier implements IHomeScreenViewmodel
       notifyListeners();
 
       await _extractColors();
+
+      if (!context.mounted) return;
       showColorPalette(context);
     }
   }
 
   Future<void> _extractColors() async {
-    _colors = await colorExtractorService.extractDominantColors(_image!, maxColors: 10);
+    _colors = await colorExtractorService.extractDominantColors(_image!);
     notifyListeners();
   }
 
   @override
   void showColorPalette(BuildContext context) {
     showModalBottomSheet(
+      // barrierColor: MediaQuery.sizeOf(context).height * 0.15 ? Colors.transparent,
       context: context,
-      showDragHandle: true,
+      isScrollControlled: true,
+      enableDrag: false,
       isDismissible: false,
-      constraints: BoxConstraints(minHeight: 200),
       builder: (context) {
-        return ListView.builder(
-          itemCount: _colors!.length,
-          itemBuilder: (context, index) {
-            final color = _colors![index];
-            return GestureDetector(
-              onTap: () => _copyToClipboard(color, context),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text(
-                      "RGB: ${color.r.toStringAsFixed(4)}, ${color.g.toStringAsFixed(4)}, ${color.b.toStringAsFixed(4)}",
+        return DraggableScrollableSheet(
+          expand: false,
+          minChildSize: 0.15,
+          initialChildSize: 0.5,
+          maxChildSize: 0.5,
+          snap: true,
+          shouldCloseOnMinExtent: false,
+          builder: (context, scrollController) {
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0, top: 10.0),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.cancel_rounded, size: 30),
                     ),
-                    Container(height: 15, width: 15, color: color),
-                  ],
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: _colors!.length,
+                    itemBuilder: (context, index) {
+                      final color = _colors![index];
+                      return ListTile(
+                        onTap: () => _copyToClipboard(color, context),
+
+                        title: Text(
+                          "RGB: ${color.r.toStringAsFixed(4)}, ${color.g.toStringAsFixed(4)}, ${color.b.toStringAsFixed(4)}",
+                        ),
+                        trailing: Container(
+                          height: 20,
+                          width: 20,
+                          decoration: BoxDecoration(
+                            color: color,
+                            border: Border.all(color: Colors.black),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             );
           },
         );
@@ -86,8 +117,11 @@ class HomeScreenViewmodel extends ChangeNotifier implements IHomeScreenViewmodel
     final colorText =
         "RGB: ${color.r.toStringAsFixed(4)}, ${color.g.toStringAsFixed(4)}, ${color.b.toStringAsFixed(4)}";
 
+    // print(color.b.);
+
     Clipboard.setData(ClipboardData(text: colorText));
 
+    // TODO: replace this with a toast to show it from the top
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text("Copied this color: $colorText")));
