@@ -29,7 +29,15 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Consumer<IHomeScreenViewmodel>(
         builder: (context, viewmodel, child) => Center(
           child: viewmodel.image != null
-              ? Image.file(viewmodel.image!, fit: BoxFit.scaleDown)
+              ? SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(12),
+                      child: Image.file(viewmodel.image!, fit: BoxFit.scaleDown),
+                    ),
+                  ),
+                )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

@@ -33,19 +33,22 @@ class _ColorPaletteState extends State<ColorPalette> {
                 Spacer(flex: 2),
 
                 // color format picker
-                DropdownButton(
-                  value: homeScreenViewmodel.colorFormat,
-                  items: [
-                    DropdownMenuItem(value: ColorFormat.hex, child: Text('Hex')),
-                    DropdownMenuItem(value: ColorFormat.rgb, child: Text("RGB")),
-                  ],
-                  onChanged: (format) {
-                    setState(() {
-                      homeScreenViewmodel.changeColorFormat = format!;
-                    });
+                DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    value: homeScreenViewmodel.colorFormat,
+                    elevation: 0,
+                    items: [
+                      DropdownMenuItem(value: ColorFormat.hex, child: Text('Hex')),
+                      DropdownMenuItem(value: ColorFormat.rgb, child: Text("RGB")),
+                    ],
+                    onChanged: (format) {
+                      setState(() {
+                        homeScreenViewmodel.changeColorFormat = format!;
+                      });
 
-                    print(homeScreenViewmodel.colorFormat);
-                  },
+                      print(homeScreenViewmodel.colorFormat);
+                    },
+                  ),
                 ),
                 Spacer(),
 
