@@ -10,6 +10,8 @@ abstract class IHomeScreenViewmodel extends ChangeNotifier {
   File? get image;
   ImagePicker get picker;
   List<Color> get colors;
+  int? get maxColorCount;
+  set maxColorCount(int? value);
 
   ColorFormat get colorFormat;
   set changeColorFormat(ColorFormat color);
@@ -27,6 +29,7 @@ class HomeScreenViewmodel extends ChangeNotifier implements IHomeScreenViewmodel
   File? _image;
   List<Color>? _colors;
   ColorFormat _colorFormat = ColorFormat.hex;
+  int? _maxColorCount = 6;
 
   @override
   File? get image => _image;
@@ -39,6 +42,15 @@ class HomeScreenViewmodel extends ChangeNotifier implements IHomeScreenViewmodel
 
   @override
   ColorFormat get colorFormat => _colorFormat;
+
+  @override
+  int? get maxColorCount => _maxColorCount;
+
+  @override
+  set maxColorCount(int? value){
+    _maxColorCount = value;
+  }
+
 
   @override
   set changeColorFormat(ColorFormat color) {
@@ -61,7 +73,7 @@ class HomeScreenViewmodel extends ChangeNotifier implements IHomeScreenViewmodel
   }
 
   Future<void> _extractColors() async {
-    _colors = await colorExtractorService.extractDominantColors(_image!, maxColors: 12);
+    _colors = await colorExtractorService.extractDominantColors(_image!, maxColors: _maxColorCount!);
     notifyListeners();
   }
 
@@ -78,4 +90,5 @@ class HomeScreenViewmodel extends ChangeNotifier implements IHomeScreenViewmodel
       },
     );
   }
+
 }

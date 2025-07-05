@@ -28,9 +28,27 @@ class _ColorPaletteState extends State<ColorPalette> {
         return Column(
           children: [
             Row(
-              // mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Spacer(flex: 2),
+                SizedBox(),
+                DropdownButtonHideUnderline(
+                  child: DropdownButton<int>(
+                    // hint: Text('Max number of colors'),
+                    value: homeScreenViewmodel.maxColorCount,
+                    items: List.generate(11, (index) {
+                      int number = index + 2;
+                      return DropdownMenuItem<int>(
+                        value: number,
+                        child: Text(number.toString()),
+                      );
+                    }),
+                    onChanged: (value) {
+                      setState(() {
+                        homeScreenViewmodel.maxColorCount = value;
+                      });
+                    },
+                  ),
+                ),
 
                 // color format picker
                 DropdownButtonHideUnderline(
@@ -38,8 +56,14 @@ class _ColorPaletteState extends State<ColorPalette> {
                     value: homeScreenViewmodel.colorFormat,
                     elevation: 0,
                     items: [
-                      DropdownMenuItem(value: ColorFormat.hex, child: Text('Hex')),
-                      DropdownMenuItem(value: ColorFormat.rgb, child: Text("RGB")),
+                      DropdownMenuItem(
+                        value: ColorFormat.hex,
+                        child: Text('Hex'),
+                      ),
+                      DropdownMenuItem(
+                        value: ColorFormat.rgb,
+                        child: Text("RGB"),
+                      ),
                     ],
                     onChanged: (format) {
                       setState(() {
@@ -50,7 +74,7 @@ class _ColorPaletteState extends State<ColorPalette> {
                     },
                   ),
                 ),
-                Spacer(),
+                // Spacer(),
 
                 // close button
                 Padding(
@@ -72,7 +96,11 @@ class _ColorPaletteState extends State<ColorPalette> {
                 itemBuilder: (context, index) {
                   final color = homeScreenViewmodel.colors[index];
                   return ListTile(
-                    onTap: () => copyToClipboard(color, context, homeScreenViewmodel.colorFormat),
+                    onTap: () => copyToClipboard(
+                      color,
+                      context,
+                      homeScreenViewmodel.colorFormat,
+                    ),
 
                     title: Text(
                       homeScreenViewmodel.colorFormat == ColorFormat.rgb
