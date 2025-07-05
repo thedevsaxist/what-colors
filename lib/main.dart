@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whatcolors/app/core/service_locator.dart';
+import 'package:whatcolors/app/core/theme/theme.dart';
 import 'package:whatcolors/app/core/whatcolors.dart';
 import 'package:whatcolors/app/features/color_picker/presentation/state/home_screen_viewmodel.dart';
 
@@ -10,7 +11,10 @@ void main() {
 
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => sl<IHomeScreenViewmodel>())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => sl<IHomeScreenViewmodel>()),
+        ChangeNotifierProvider(create: (_) => sl<AppTheme>()),
+      ],
       child: const WhatColors(),
     ),
   );
