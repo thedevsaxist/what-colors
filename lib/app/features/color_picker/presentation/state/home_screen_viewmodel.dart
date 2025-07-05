@@ -61,7 +61,7 @@ class HomeScreenViewmodel extends ChangeNotifier implements IHomeScreenViewmodel
   }
 
   Future<void> _extractColors() async {
-    _colors = await colorExtractorService.extractDominantColors(_image!);
+    _colors = await colorExtractorService.extractDominantColors(_image!, maxColors: 12);
     notifyListeners();
   }
 
